@@ -1,0 +1,38 @@
+version: "3.8"
+services:
+  db:
+    image: postgres
+    container_name: postgres
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: secretroot
+      POSTGRES_DB: mks-desafio
+    volumes:
+      - local_pgdata:/var/lib/postgresql/data
+    networks:
+      - postgres
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin4
+    restart: always
+    ports:
+      - "8888:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: secretroot
+      PGADMIN_LISTEN_ADDRESS: 0.0.0.0
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+    networks:
+      - postgres
+
+volumes:
+  local_pgdata:
+  pgadmin-data:
+
+networks:
+  postgres:
+    driver: bridge
